@@ -4,7 +4,7 @@ Simple web app for all score keeping purposes.
 
 ## Setup
 
-### ```
+```
 git clone https://github.com/cherrynoize/scorekeep
 cd scorekeep
 npm i
