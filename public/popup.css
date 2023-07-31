@@ -1,7 +1,3 @@
-.popup:not(.active) {
-  display: none;
-}
-
 .popup-container {
   z-index: 1;
   display: flex;
@@ -15,14 +11,14 @@
   pointer-events: none;
 }
 
-.popup.active {
+.popup {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
-  min-width: 400px;
-  min-height: 200px;
+  width: 100%;
+  max-width: 400px;
   padding: 1.2rem;
   background-color: var(--container-bg);
   border: 3px solid var(--main-brdr);
@@ -39,6 +35,10 @@
   padding: .3rem;
 }
 
+.popup input[type="text"] {
+  align-self: center;
+}
+
 .popup .btn-container {
   align-self: stretch;
   display: flex;
@@ -51,14 +51,4 @@
   background-color: transparent;
   border: 3px solid var(--main-brdr);
   font-size: 1.1rem;
-}
-
-.popup.score__update {
-  align-items: center;
-  min-width: 200px;
-  min-height: 100px;
-}
-
-.popup.score__update .msg-container input {
-  max-width: 50px;
 }

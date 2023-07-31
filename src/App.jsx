@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Popup, { queryPopup } from './popup';
+import Popup, { queryPopup } from './Popup';
 
 const MAX_SCORE = (10 ** 6) - 1;
 
@@ -15,13 +15,7 @@ function PlayerTracker(props) {
   const [isEditable, setIsEditable] = useState(false);
 
   function updateScore() {
-    const reply = Number(queryPopup("player-" + props.index));
-
-    const amount = isNaN(reply)
-      ? 0
-      : reply;
-
-    props.onScoreChange(amount);
+    props.onScoreChangeRequest(props.amount);
   }
 
   const PlayerNameComponent = isEditable === false
@@ -33,7 +27,7 @@ function PlayerTracker(props) {
               props.onNameChange(name);
               setIsEditable(false);
             }}>
-        <input className={_props.className} type="text" name="name" maxlength="12" defaultValue={_props.children} />
+        <input className={_props.className} type="text" name="name" maxLength="12" defaultValue={_props.children} />
         <button className="delete-player btn"
                 type="button"
                 onClick={() => {
@@ -46,7 +40,7 @@ function PlayerTracker(props) {
     )
 
   return (
-    <>
+    // <>
       <TrackerContainer>
         <button className="score btn" onClick={updateScore}>
           {props.children}
@@ -55,17 +49,17 @@ function PlayerTracker(props) {
           {props.player}
         </PlayerNameComponent>
       </TrackerContainer>
-      <Popup resultElementId={"popup__result-" + props.index}
-             tag={"player-" + props.index}
-             divClass="score__update">
-        <span>Score</span>
-        <input id={"popup__result-" + props.index}
-               type="text"
-               pattern="\d*"
-               maxlength="6"
-               placeholder="0" />
-    </Popup>
-    </>
+    //   <Popup resultelementid={"popup__result-" + props.index}
+    //          tag={"player-" + props.index}
+    //          divclass="score__update">
+    //     <span>Score</span>
+    //     <input id={"popup__result-" + props.index}
+    //            type="text"
+    //            pattern="\d*"
+    //            maxLength="6"
+    //            placeholder="0" />
+    // </Popup>
+    // </>
   );
 }
 
@@ -73,6 +67,7 @@ const initialState = [];
 
 function App() {
   const [players, setPlayers] = useState(initialState);
+  const [popupPlayerIndex, setPopupPlayerIndex] = useState(-1);
 
   return (
     <div className="App">
@@ -97,10 +92,13 @@ function App() {
                     players[index].name = name;
                     return players.slice();
                   })}
-                  onScoreChange={amount => setPlayers(players => {
+/*                {onScoreChange={amount => setPlayers(players => {
                     players[index].score += amount;
                     return players.slice();
-                  })}
+                  })}} */
+                  onScoreChangeRequest={() => {
+                    setPopupPlayerIndex(index);
+                  }}
                   onPlayerDelete={() => setPlayers(players => {
                     players.splice(index,1);
                     return players.slice();
@@ -117,6 +115,24 @@ function App() {
           ) : ''
         }
       </main>
+
+      <Popup
+        width={250}
+        isopen={popupPlayerIndex !== -1}
+        oncloserequest={() => setPopupPlayerIndex(-1)}
+        onconfirm={value => {
+          const amount = isNaN(Number(value))
+            ? 0
+            : Number(value);
+
+          setPlayers(players => {
+            players[popupPlayerIndex].score += amount;
+            return players.slice();
+          })
+        }}
+      >
+        Ed ecco il testo da mostrare...
+      </Popup>
     </div>
   );
 }
