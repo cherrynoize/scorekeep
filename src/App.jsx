@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Popup, { queryPopup } from './Popup';
+import Popup from './Popup';
 
 const MAX_SCORE = (10 ** 6) - 1;
 
